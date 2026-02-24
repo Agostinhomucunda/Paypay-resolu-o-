@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Método de Pagamento | PayPay Ganha</title>
+</head>
+<body style="padding: 20px;">
+    <div style="text-align: center; margin: 40px 0;">
+        <h2 style="font-weight: 900;">Como deseja pagar?</h2>
+        <p style="font-size: 13px; color: var(--text-dim);">Escolha o método para ver as instruções.</p>
+    </div>
+
+    <div style="display: grid; gap: 20px;">
+        <div class="premium-card" onclick="definirMetodo('paypay')" style="cursor:pointer; display:flex; align-items:center; gap:20px; border-color: var(--paypay);">
+            <img src="https://i.postimg.cc/G2K2SCFQ/C9541CCF_3AD6_4F7A_9CEA_33F2F300A8FB.jpg" width="50" style="border-radius: 12px;">
+            <div>
+                <h4 style="color: var(--paypay);">PayPay AO</h4>
+                <p style="font-size: 11px; opacity: 0.7;">Transferência Direta</p>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="margin-left: auto; opacity: 0.3;"></i>
+        </div>
+
+        <div class="premium-card" onclick="definirMetodo('express')" style="cursor:pointer; display:flex; align-items:center; gap:20px; border-color: #004a99;">
+            <img src="https://i.postimg.cc/SstS2pq6/multicaixa-express.png" width="50" style="border-radius: 12px;">
+            <div>
+                <h4 style="color: #004a99;">Multicaixa Express</h4>
+                <p style="font-size: 11px; opacity: 0.7;">Pagamento por Referência</p>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="margin-left: auto; opacity: 0.3;"></i>
+        </div>
+    </div>
+
+    <script>
+        function definirMetodo(metodo) {
+            localStorage.setItem('metodo_pagamento', metodo);
+            location.href = 'pagar_investimento.html';
+        }
+    </script>
+</body>
+</html>
