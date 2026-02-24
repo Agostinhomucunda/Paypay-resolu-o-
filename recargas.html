@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Trocar Pontos | PayPay Ganha</title>
+</head>
+<body style="padding: 20px; padding-bottom: 50px;">
+
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+        <button onclick="history.back()" style="background: none; border: none; color: white; font-size: 20px;"><i class="fa-solid fa-arrow-left"></i></button>
+        <h2 style="font-weight: 900;">Loja de Recargas</h2>
+    </div>
+
+    <p style="font-size: 10px; color: var(--unitel); font-weight: 800; margin-bottom: 10px; letter-spacing: 1px;">UNITEL AO</p>
+    
+    <div class="premium-card" style="padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-phone" style="color: var(--unitel);"></i>
+            <div><p style="font-size: 13px; font-weight: 700;">500 Kz VOZ</p><p style="font-size: 10px; opacity: 0.6;">1.000 Pontos</p></div>
+        </div>
+        <button onclick="prepararTroca(1000, 'Unitel 500 Voz')" class="btn-troca" style="margin-top:0; padding: 8px 15px;">TROCAR</button>
+    </div>
+
+    <div class="premium-card" style="padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-wifi" style="color: var(--unitel);"></i>
+            <div><p style="font-size: 13px; font-weight: 700;">500 Kz DADOS</p><p style="font-size: 10px; opacity: 0.6;">1.500 Pontos</p></div>
+        </div>
+        <button onclick="prepararTroca(1500, 'Unitel 500 Dados')" class="btn-troca" style="margin-top:0; padding: 8px 15px;">TROCAR</button>
+    </div>
+
+    <div class="premium-card" style="padding: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-sim-card" style="color: var(--unitel);"></i>
+            <div><p style="font-size: 13px; font-weight: 700;">2000 Kz UTT</p><p style="font-size: 10px; opacity: 0.6;">5.000 Pontos</p></div>
+        </div>
+        <button onclick="prepararTroca(5000, 'Unitel 2000 UTT')" class="btn-troca" style="margin-top:0; padding: 8px 15px;">TROCAR</button>
+    </div>
+
+    <p style="font-size: 10px; color: var(--africel); font-weight: 800; margin-bottom: 10px; letter-spacing: 1px;">AFRICEL AO</p>
+
+    <div class="premium-card" style="padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-microphone-lines" style="color: var(--africel);"></i>
+            <div><p style="font-size: 13px; font-weight: 700;">500 Kz VOZ</p><p style="font-size: 10px; opacity: 0.6;">1.000 Pontos</p></div>
+        </div>
+        <button onclick="prepararTroca(1000, 'Africel 500 Voz')" class="btn-troca" style="margin-top:0; padding: 8px 15px;">TROCAR</button>
+    </div>
+
+    <div class="premium-card" style="padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-globe" style="color: var(--africel);"></i>
+            <div><p style="font-size: 13px; font-weight: 700;">500 Kz DADOS</p><p style="font-size: 10px; opacity: 0.6;">1.500 Pontos</p></div>
+        </div>
+        <button onclick="prepararTroca(1500, 'Africel 500 Dados')" class="btn-troca" style="margin-top:0; padding: 8px 15px;">TROCAR</button>
+    </div>
+
+    <div class="premium-card" style="padding: 15px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-bolt" style="color: var(--africel);"></i>
+            <div><p style="font-size: 13px; font-weight: 700;">2000 Kz UTT</p><p style="font-size: 10px; opacity: 0.6;">5.000 Pontos</p></div>
+        </div>
+        <button onclick="prepararTroca(5000, 'Africel 2000 UTT')" class="btn-troca" style="margin-top:0; padding: 8px 15px;">TROCAR</button>
+    </div>
+
+    <div id="finalizar-container" class="input-lock">
+        <p style="font-size: 11px; margin-bottom: 10px; text-align: center; color: var(--paypay);">TIPO: <span id="item-selecionado">---</span></p>
+        <input type="number" id="phone-recarga" class="ultra-input" placeholder="Número que receberá a recarga">
+        <button id="btn-concluir" class="btn-main">CONCLUIR TROCA</button>
+    </div>
+
+    <script type="module">
+        import { auth, db } from "./firebase.js";
+        import { doc, getDoc, updateDoc, increment, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        let pontosNecessarios = 0;
+        let itemNome = "";
+
+        window.prepararTroca = async (pts, nome) => {
+            const userSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
+            const meusPontos = userSnap.data().pontos || 0;
+
+            if (meusPontos < pts) {
+                alert(`Pontos insuficientes! Faltam ${pts - meusPontos} pontos.`);
+                return;
+            }
+
+            // Desbloqueia o campo
+            pontosNecessarios = pts;
+            itemNome = nome;
+            document.getElementById('item-selecionado').innerText = nome;
+            document.getElementById('finalizar-container').className = "input-unlock";
+            document.getElementById('phone-recarga').focus();
+        };
+
+        document.getElementById('btn-concluir').onclick = async () => {
+            const fone = document.getElementById('phone-recarga').value;
+            if(fone.length < 9) return alert("Insira um número válido.");
+
+            const btn = document.getElementById('btn-concluir');
+            btn.disabled = true;
+            btn.innerText = "PROCESSANDO...";
+
+            try {
+                const userRef = doc(db, "users", auth.currentUser.uid);
+                
+                // 1. Descontar pontos
+                await updateDoc(userRef, {
+                    pontos: increment(-pontosNecessarios)
+                });
+
+                // 2. Registrar pedido para o Admin ver
+                await addDoc(collection(db, "pedidos_recarga"), {
+                    uid: auth.currentUser.uid,
+                    item: itemNome,
+                    telefone: fone,
+                    data: new Date().toLocaleString(),
+                    status: "Pendente"
+                });
+
+                alert("Pedido de recarga enviado com sucesso! Aguarde a ativação.");
+                location.href = "dashboard.html";
+
+            } catch (e) {
+                alert("Erro ao processar: " + e.message);
+                btn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>

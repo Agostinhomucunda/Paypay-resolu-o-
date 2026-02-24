@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Saque | PayPay Ganha</title>
+</head>
+<body style="padding: 20px; padding-bottom: 120px;">
+
+    <div style="margin-bottom: 30px;">
+        <h2 style="font-weight: 900;">Retirada de Fundos</h2>
+        <p style="font-size: 13px; color: var(--text-dim);">Escolha o método para receber o seu lucro.</p>
+    </div>
+
+    <div style="display: grid; gap: 15px; margin-bottom: 30px;">
+        <div class="premium-card method-card" onclick="setMethod('Banco')" id="m-banco">
+            <i class="fa-solid fa-building-columns"></i>
+            <span>Transferência Bancária (BAI, BFA...)</span>
+        </div>
+        <div class="premium-card method-card" onclick="setMethod('Express')" id="m-express">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+            <span>Multicaixa Express</span>
+        </div>
+        <div class="premium-card method-card" onclick="setMethod('PayPay')" id="m-paypay">
+            <img src="https://i.postimg.cc/G2K2SCFQ/C9541CCF_3AD6_4F7A_9CEA_33F2F300A8FB.jpg" width="20" style="border-radius: 4px;">
+            <span>PayPay AO</span>
+        </div>
+    </div>
+
+    <div class="premium-card" id="form-saque" style="display: none;">
+        <div id="campos-banco" style="display: none;">
+            <select id="select-banco" class="ultra-input">
+                <option value="">Selecionar Banco...</option>
+                <option value="BAI">BAI</option>
+                <option value="BFA">BFA</option>
+                <option value="ATLANTICO">Millennium Atlântico</option>
+                <option value="BIC">BIC</option>
+                <option value="OUTRO">Outro Banco</option>
+            </select>
+            <input type="text" id="iban" placeholder="IBAN (AO06...)" class="ultra-input">
+            <input type="text" id="titular" placeholder="Nome do Titular" class="ultra-input">
+        </div>
+
+        <div id="campos-simples" style="display: none;">
+            <input type="number" id="numero-conta" placeholder="Número Associado" class="ultra-input">
+        </div>
+
+        <input type="number" id="valor-saque" placeholder="Valor do Saque (Kz)" class="ultra-input">
+        <p id="error-saque" style="color: #ff4444; font-size: 11px; margin-bottom: 15px; display: none; font-weight: 700;"></p>
+        
+        <button id="btn-confirmar-saque" class="btn-main">SOLICITAR RETIRADA</button>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="location.href='dashboard.html'"><i class="fa-solid fa-house"></i></div>
+        <div class="nav-item" onclick="location.href='investir.html'"><i class="fa-solid fa-chart-pie"></i></div>
+        <div class="nav-item active"><i class="fa-solid fa-wallet"></i></div>
+    </nav>
+
+    <script type="module">
+        import { auth, db } from "./firebase.js";
+        import { doc, getDoc, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        let metodoAtual = "";
+
+        window.setMethod = (m) => {
+            metodoAtual = m;
+            document.querySelectorAll('.method-card').forEach(c => c.style.borderColor = 'var(--border)');
+            document.getElementById(`m-${m.toLowerCase()}`).style.borderColor = 'var(--paypay)';
+            document.getElementById('form-saque').style.display = 'block';
+            
+            document.getElementById('campos-banco').style.display = m === 'Banco' ? 'block' : 'none';
+            document.getElementById('campos-simples').style.display = m !== 'Banco' ? 'block' : 'none';
+        };
+
+        document.getElementById('btn-confirmar-saque').onclick = async () => {
+            const valor = parseFloat(document.getElementById('valor-saque').value);
+            const err = document.getElementById('error-saque');
+
+            if (valor < 20000) {
+                err.innerText = "SAQUE MÍNIMO DE 20.000 KZ";
+                err.style.display = "block";
+                return;
+            }
+
+            const userSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
+            if (userSnap.data().saldo < valor) {
+                err.innerText = "SALDO INSUFICIENTE";
+                err.style.display = "block";
+                return;
+            }
+
+            // Registrar Pedido
+            await addDoc(collection(db, "saques"), {
+                uid: auth.currentUser.uid,
+                valor: valor,
+                metodo: metodoAtual,
+                status: "pendente",
+                data: serverTimestamp()
+            });
+
+            alert("Pedido de saque enviado! Prazo: 24h úteis.");
+            location.href = "dashboard.html";
+        };
+    </script>
+</body>
+</html>

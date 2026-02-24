@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Arcade Elite | PayPay Ganha</title>
+</head>
+<body style="padding: 20px; padding-bottom: 120px;">
+
+    <div style="text-align: center; margin-bottom: 30px; margin-top: 10px;">
+        <h2 style="font-weight: 900; letter-spacing: -1px;">ARENA DE <span style="color: var(--paypay);">PONTOS</span></h2>
+        <p style="font-size: 12px; color: var(--text-dim);">Ganhe pontos reais através da sua habilidade.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;" id="game-grid">
+        <div class="premium-card" onclick="openGame('memory')" style="text-align: center; border-color: var(--paypay);">
+            <i class="fa-solid fa-brain" style="font-size: 30px; color: var(--paypay);"></i>
+            <h4 style="margin-top: 10px; font-size: 14px;">Memory Pro</h4>
+            <span class="badge-rank rank-cadete" style="font-size: 8px;">Livre</span>
+        </div>
+
+        <div class="premium-card" onclick="openGame('snake')" style="text-align: center; position: relative;">
+            <i class="fa-solid fa-staff-snake" style="font-size: 30px; color: var(--unitel);"></i>
+            <h4 style="margin-top: 10px; font-size: 14px;">Snake Elite</h4>
+            <span class="badge-rank rank-ouro" style="font-size: 8px;">Rank Ouro</span>
+        </div>
+
+        <div class="premium-card" onclick="openGame('tower')" style="text-align: center;">
+            <i class="fa-solid fa-layer-group" style="font-size: 30px; color: var(--diamond);"></i>
+            <h4 style="margin-top: 10px; font-size: 14px;">Tower Stack</h4>
+            <span class="badge-rank rank-diamante" style="font-size: 8px;">Rank Diamante</span>
+        </div>
+
+        <div class="premium-card" style="text-align: center; opacity: 0.5;">
+            <i class="fa-solid fa-calculator" style="font-size: 30px; color: #ff4444;"></i>
+            <h4 style="margin-top: 10px; font-size: 14px;">Math Flash</h4>
+            <span class="badge-rank rank-elite" style="font-size: 8px;">Rank Elite</span>
+        </div>
+    </div>
+
+    <div id="game-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-dark); z-index:10001; padding: 20px;">
+        <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 id="game-title" style="color:var(--paypay)">Arcade</h3>
+            <button onclick="closeGame()" style="background:none; border:none; color:#fff; font-size:25px;"><i class="fa-solid fa-circle-xmark"></i></button>
+        </div>
+        <div id="game-container" style="width:100%; min-height:400px;"></div>
+        <p id="game-msg" style="text-align:center; margin-top:20px; font-weight:bold;"></p>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="location.href='dashboard.html'"><i class="fa-solid fa-house"></i></div>
+        <div class="nav-item active"><i class="fa-solid fa-gamepad"></i></div>
+        <div class="nav-item" onclick="location.href='investir.html'"><i class="fa-solid fa-chart-line"></i></div>
+    </nav>
+
+    <script type="module" src="game_logic.js"></script>
+</body>
+</html>

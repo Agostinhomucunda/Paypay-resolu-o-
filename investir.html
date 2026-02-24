@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Investir | PayPay Ganha</title>
+</head>
+<body style="padding: 20px; padding-bottom: 120px;">
+
+    <div style="margin-bottom: 30px; text-align: center;">
+        <h2 style="font-weight: 900;">Planos de Investimento</h2>
+        <p style="font-size: 13px; color: var(--text-dim);">Retorno garantido de 35% sobre o valor.</p>
+    </div>
+
+    <div id="planos-container" style="display: grid; gap: 15px;">
+        </div>
+
+    <script type="module">
+        const planos = [
+            { valor: 4000, dias: 10, nome: 'Cadete' },
+            { valor: 6000, dias: 10, nome: 'Cadete +' },
+            { valor: 8000, dias: 10, nome: 'Cadete Pro' },
+            { valor: 10000, dias: 8, nome: 'Pré-Ouro' },
+            { valor: 15000, dias: 8, nome: 'Ouro' },
+            { valor: 20000, dias: 6, nome: 'Pré-Diamante' },
+            { valor: 25000, dias: 6, nome: 'Diamante' },
+            { valor: 30000, dias: 6, nome: 'Pro' },
+            { valor: 50000, dias: 4, nome: 'Elite' },
+            { valor: 100000, dias: 2, nome: 'Desafiante' }
+        ];
+
+        const container = document.getElementById('planos-container');
+
+        planos.forEach(p => {
+            const lucro = p.valor * 0.35;
+            const total = p.valor + lucro;
+            
+            container.innerHTML += `
+                <div class="premium-card" onclick="selecionarPlano(${p.valor}, ${p.dias}, '${p.nome}')" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <h4 style="color:var(--paypay)">${p.nome}</h4>
+                        <p style="font-size:11px; color:var(--text-dim)">${p.valor.toLocaleString()} Kz • ${p.dias} dias</p>
+                    </div>
+                    <div style="text-align:right">
+                        <p style="font-weight:800; font-size:16px;">+ ${lucro.toLocaleString()} Kz</p>
+                        <p style="font-size:9px; opacity:0.5">TOTAL: ${total.toLocaleString()} Kz</p>
+                    </div>
+                </div>
+            `;
+        });
+
+        window.selecionarPlano = (valor, dias, nome) => {
+            localStorage.setItem('plano_v', valor);
+            localStorage.setItem('plano_d', dias);
+            localStorage.setItem('plano_n', nome);
+            location.href = 'pagar_investimento.html';
+        };
+    </script>
+</body>
+</html>
