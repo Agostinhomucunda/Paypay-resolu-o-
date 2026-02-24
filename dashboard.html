@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Dashboard | PayPay Ganha</title>
+</head>
+<body style="padding: 20px; padding-bottom: 120px;">
+
+    <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div id="user-rank-icon" style="width: 50px; height: 50px; border-radius: 15px; background: var(--glass); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border);">
+                <i class="fa-solid fa-medal" style="font-size: 24px;"></i>
+            </div>
+            <div>
+                <h4 id="user-name" style="font-weight: 800; font-size: 18px;">...</h4>
+                <div id="rank-badge" class="badge-rank rank-cadete">Carregando Rank...</div>
+            </div>
+        </div>
+        <div onclick="location.href='perfil.html'" style="font-size: 24px; opacity: 0.7;"><i class="fa-solid fa-user-gear"></i></div>
+    </header>
+
+    <div class="premium-card" style="background: linear-gradient(135deg, rgba(0,200,83,0.15) 0%, rgba(255,255,255,0.02) 100%);">
+        <p style="font-size: 11px; letter-spacing: 2px; opacity: 0.6; font-weight: 700;">SALDO DISPONÍVEL</p>
+        <h1 id="saldo-txt" style="font-size: 40px; font-weight: 900; margin: 10px 0;">0 Kz</h1>
+        
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <div style="flex: 1; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 18px; border: 1px solid var(--border);">
+                <p style="font-size: 9px; color: var(--text-dim);">EM RENDIMENTO</p>
+                <p id="investido-txt" style="font-weight: 800; color: var(--paypay);">0 Kz</p>
+            </div>
+            <div style="flex: 1; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 18px; border: 1px solid var(--border); text-align: center;">
+                <p style="font-size: 9px; color: var(--text-dim);">PONTOS ARCADE</p>
+                <p id="pontos-txt" style="font-weight: 800; color: var(--africel);">0 pts</p>
+                <button onclick="location.href='recargas.html'" class="btn-troca">TROCAR</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="invite-banner" onclick="location.href='perfil.html'">
+        <div class="invite-icon">
+            <i class="fa-solid fa-user-plus"></i>
+        </div>
+        <div style="flex: 1;">
+            <h4 style="font-size: 13px; color: #fff; font-weight: 800;">CONVIDE E GANHE</h4>
+            <p style="font-size: 10px; color: rgba(255,255,255,0.6);">Ganhe <span style="color: var(--paypay); font-weight: bold;">1.000 Kz</span> no primeiro investimento de um amigo!</p>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="font-size: 12px; opacity: 0.5;"></i>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 30px; text-align: center;">
+        <div onclick="location.href='investir.html'"><div class="premium-card" style="padding: 15px; border-radius: 20px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--paypay);"></i></div><p style="font-size: 10px; margin-top: 8px;">Investir</p></div>
+        <div onclick="location.href='jogos.html'"><div class="premium-card" style="padding: 15px; border-radius: 20px;"><i class="fa-solid fa-gamepad" style="color: var(--africel);"></i></div><p style="font-size: 10px; margin-top: 8px;">Jogos</p></div>
+        <div onclick="location.href='videos.html'"><div class="premium-card" style="padding: 15px; border-radius: 20px;"><i class="fa-solid fa-play" style="color: #ff4444;"></i></div><p style="font-size: 10px; margin-top: 8px;">Vídeos</p></div>
+        <div onclick="location.href='saque.html'"><div class="premium-card" style="padding: 15px; border-radius: 20px;"><i class="fa-solid fa-wallet"></i></div><p style="font-size: 10px; margin-top: 8px;">Saque</p></div>
+    </div>
+
+    <div class="premium-card" style="margin-top: 30px; padding: 20px;">
+        <h4 style="font-size: 14px; margin-bottom: 5px;">EVOLUÇÃO DE RENDIMENTOS</h4>
+        <p style="font-size: 11px; opacity: 0.5; margin-bottom: 20px;">(Últimos 7 dias)</p>
+        <div style="height: 180px; width: 100%;">
+            <canvas id="chartRendimentos"></canvas>
+        </div>
+    </div>
+
+    <div class="premium-card" style="margin-top: 20px; padding: 20px;">
+        <h4 style="font-size: 14px; margin-bottom: 20px;">ATIVIDADES RECENTES</h4>
+        <div id="lista-atividades">
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                <div style="width: 35px; height: 35px; border-radius: 10px; background: rgba(0,200,83,0.1); display: flex; align-items: center; justify-content: center;">
+                    <i class="fa-solid fa-arrow-up" style="color: var(--paypay); font-size: 12px;"></i>
+                </div>
+                <div style="flex: 1;">
+                    <p style="font-size: 12px; font-weight: 600;">Rendimento diário creditado</p>
+                    <p style="font-size: 10px; opacity: 0.5;">Hoje</p>
+                </div>
+                <p style="color: var(--paypay); font-weight: 700; font-size: 12px;">+520 Kz</p>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active"><i class="fa-solid fa-house"></i></div>
+        <div class="nav-item" onclick="location.href='investir.html'"><i class="fa-solid fa-chart-pie"></i></div>
+        <div class="nav-item" onclick="location.href='jogos.html'"><i class="fa-solid fa-circle-play"></i></div>
+        <div class="nav-item" onclick="location.href='perfil.html'"><i class="fa-solid fa-user"></i></div>
+    </nav>
+
+    <script>
+        // Função para animar os números no Dashboard
+        window.animarValores = (id, valorFinal) => {
+            const el = document.getElementById(id);
+            if(!el) return;
+            let start = 0;
+            const duration = 1500;
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                el.innerText = Math.floor(progress * valorFinal).toLocaleString() + " Kz";
+                if (progress < 1) window.requestAnimationFrame(step);
+            };
+            window.requestAnimationFrame(step);
+        };
+
+        const ctx = document.getElementById('chartRendimentos').getContext('2d');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 180);
+        gradient.addColorStop(0, 'rgba(0, 200, 83, 0.3)');
+        gradient.addColorStop(1, 'rgba(0, 200, 83, 0)');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB', 'DOM'],
+                datasets: [{
+                    label: 'Kz',
+                    data: [2500, 1600, 2850, 3200, 3900, 3280, 4500],
+                    borderColor: '#00c853',
+                    borderWidth: 3,
+                    fill: true,
+                    backgroundColor: gradient,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#00c853'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { display: false },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 10 } }
+                    }
+                }
+            }
+        });
+    </script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>

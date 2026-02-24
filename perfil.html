@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Meu Perfil | PayPay</title>
+</head>
+<body style="padding: 20px; padding-bottom: 120px;">
+
+    <div class="premium-card" style="text-align: center; margin-top: 20px;">
+        <div style="position: relative; display: inline-block;">
+            <img src="https://i.postimg.cc/G2K2SCFQ/C9541CCF_3AD6_4F7A_9CEA_33F2F300A8FB.jpg" width="100" style="border-radius: 30px; border: 3px solid var(--paypay);">
+            <div id="rank-badge-perfil" class="badge-rank rank-cadete" style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);">CADETE</div>
+        </div>
+        <h2 id="p-nome" style="margin-top: 25px; font-weight: 900;">...</h2>
+        <p id="p-email" style="font-size: 13px; color: var(--text-dim);"></p>
+    </div>
+
+    <div class="premium-card" style="margin-top: 20px;">
+        <h4 style="margin-bottom: 10px; font-size: 14px;">Programa de Afiliados</h4>
+        <p style="font-size: 11px; color: var(--text-dim); margin-bottom: 15px;">Copie seu link e ganhe 100 Kz por cada novo registo na sua rede.</p>
+        <div style="display: flex; gap: 10px;">
+            <input type="text" id="invite-link" readonly class="ultra-input" style="margin-bottom:0; font-size:12px; padding:12px;">
+            <button onclick="copyLink()" class="btn-main" style="width: auto; padding: 0 20px;"><i class="fa-solid fa-copy"></i></button>
+        </div>
+    </div>
+
+    <div class="premium-card" style="margin-top: 20px;">
+        <h4 style="font-size: 14px; color: var(--paypay);">Sobre PayPay Ganha</h4>
+        <p style="font-size: 11px; color: var(--text-dim); margin-top: 10px;">
+            Somos uma plataforma de fomento ao micro-investimento digital em Angola, operando em parceria com as infraestruturas de pagamentos PayPay AO, Unitel e Africel.
+        </p>
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
+        <p style="font-size: 12px;"><i class="fa-solid fa-envelope"></i> paypayganha@gmail.com</p>
+        <p style="font-size: 12px; margin-top: 5px;"><i class="fa-brands fa-whatsapp"></i> +244 951 875 350</p>
+    </div>
+
+    <button onclick="auth.signOut().then(() => location.href='index.html')" class="btn-main" style="margin-top: 20px; background: #ff4444; color: #fff;">SAIR DA CONTA</button>
+
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="location.href='dashboard.html'"><i class="fa-solid fa-house"></i></div>
+        <div class="nav-item" onclick="location.href='investir.html'"><i class="fa-solid fa-chart-pie"></i></div>
+        <div class="nav-item active"><i class="fa-solid fa-user"></i></div>
+    </nav>
+
+    <script type="module">
+        import { auth, db } from "./firebase.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        auth.onAuthStateChanged(async user => {
+            if(user) {
+                const snap = await getDoc(doc(db, "users", user.uid));
+                const data = snap.data();
+                document.getElementById('p-nome').innerText = data.nome;
+                document.getElementById('p-email').innerText = data.email;
+                
+                // LINK CONFIGURADO COM O TEU DOMÍNIO NETLIFY
+                const meuDominio = "https://neon-entremet-5e050f.netlify.app";
+                document.getElementById('invite-link').value = `${meuDominio}/index.html?ref=${user.uid}`;
+                
+                const badge = document.getElementById('rank-badge-perfil');
+                badge.innerText = data.rank;
+                badge.className = `badge-rank rank-${data.rank.toLowerCase().replace(' ', '-')}`;
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+
+        window.copyLink = () => {
+            const copyText = document.getElementById("invite-link");
+            copyText.select();
+            document.execCommand("copy");
+            alert("Link de convite copiado!");
+        }
+    </script>
+</body>
+</html>
