@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Vídeos Premiados</title>
+</head>
+<body style="padding: 20px;">
+    <h2 style="text-align: center; margin-bottom: 20px; font-weight: 900;">ASSISTA E <span style="color: var(--paypay);">GANHE</span></h2>
+    
+    <div class="premium-card" id="video-container" style="padding: 10px; min-height: 250px; display: flex; align-items: center; justify-content: center;">
+        <div id="loading-msg" style="opacity: 0.5;">A preparar vídeo...</div>
+    </div>
+
+    <div class="premium-card" style="margin-top: 20px; text-align: center; background: var(--glass);">
+        <p id="timer-status" style="font-size: 14px; font-weight: 700;">Assista por 60s para validar os pontos</p>
+    </div>
+
+    <script type="module">
+        // IDs de vídeos que permitem incorporação (Testados)
+        const videos = [
+            "6Z_7fO2pD8A", // Africel 
+            "XU8L8I0fTms", // Unitel 
+            "ox5xPAdrTw4", // Promo 1
+            "3W_6I0S1qfE"  // Tutorial
+        ];
+        
+        const randomVid = videos[Math.floor(Math.random() * videos.length)];
+        
+        // Ajuste no link para garantir compatibilidade total
+        const videoURL = `https://www.youtube.com/embed/${randomVid}?autoplay=1&rel=0&showinfo=0&modestbranding=1`;
+
+        document.getElementById('video-container').innerHTML = `
+            <iframe 
+                width="100%" 
+                height="230" 
+                src="${videoURL}" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen
+                style="border-radius: 18px; border: 1px solid var(--border);">
+            </iframe>`;
+    </script>
+</body>
+</html>
