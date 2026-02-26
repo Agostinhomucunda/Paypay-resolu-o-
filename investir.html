@@ -11,7 +11,7 @@
 
     <div style="margin-bottom: 30px; text-align: center;">
         <h2 style="font-weight: 900;">Planos de Investimento</h2>
-        <p style="font-size: 13px; color: var(--text-dim);">Retorno garantido de 35% sobre o valor.</p>
+        <p style="font-size: 13px; color: var(--text-dim);">Retorno garantido de 50% sobre o valor.</p>
     </div>
 
     <div id="planos-container" style="display: grid; gap: 15px;">
@@ -34,7 +34,7 @@
         const container = document.getElementById('planos-container');
 
         planos.forEach(p => {
-            const lucro = p.valor * 0.35;
+            const lucro = p.valor * 0.50;
             const total = p.valor + lucro;
             
             container.innerHTML += `
